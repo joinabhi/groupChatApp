@@ -1,7 +1,7 @@
 const Sequelize=require('sequelize');
 const sequelize=require('../util/database');
 
-const User=sequelize.define('newuser',{
+const User=sequelize.define('abhi',{
 id:{
         type:Sequelize.INTEGER,
         autoIncrement:true,
@@ -18,7 +18,7 @@ id:{
         allowNull:false
     },
    phoneNumber:{
-    type:Sequelize.NUMBER,
+    type:Sequelize.INTEGER,
     allowNull:false
    }
 });
