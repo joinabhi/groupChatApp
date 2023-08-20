@@ -31,16 +31,40 @@ window.addEventListener("DOMContentLoaded", async()=>{
             showChatOnScreen(response.data.allChats[i])
   }
 }
-
-    catch(error){
+   catch(error){
         console.log(error)
     }
 })
 
+async function fetchMessages(){
+    try{
+     const token=localStorage.getItem('token')
+     const response=await axios.get('http://localhost:5100/chat/get-chat', {headers:{"Authorization":token}});
+     console.log(response)
+     var Data=response.data.allChats;
+     const parentElem=document.getElementById('message-container');
+     parentElem.innerHTML=''
+     Data.forEach(message=>{
+      const childElem=document.createElement('div')
+      childElem.textContent=message.name+ ' : '+ message.message;
+      childElem.style.color = "black"; // Change the text color to blue
+      childElem.style.fontSize = "25px"; // Change the font size to 16 pixels
+      childElem.style.fontStyle = "bold"; // Apply italic style
+      parentElem.appendChild(childElem)
+     })
+     }catch(error){
+        console.log(error)
+    }
+}
+setInterval(fetchMessages, 10000)
+
 function showChatOnScreen(obj){
     const parentElem=document.getElementById('message-container');
-    const childElem=document.createElement('li')
-    childElem.textContent=obj.name+ '->'+ obj.message;
+    const childElem=document.createElement('div')
+    childElem.textContent=obj.name+ ' : '+ obj.message;
+    childElem.style.color = "black"; // Change the text color to blue
+    childElem.style.fontSize = "25px"; // Change the font size to 16 pixels
+    childElem.style.fontStyle = "bold"; // Apply italic style
     parentElem.appendChild(childElem)
 }
 
