@@ -19,7 +19,6 @@ h1{
     overflow-y:auto;
     margin-bottom: 23px;
 }
-
 .message{
   background-color: grey;
   width: 24%;
@@ -36,7 +35,6 @@ h1{
     float: right;
     clear: both;
 }
-
 #send-container{
     display:block;
     margin: auto;
@@ -44,15 +42,13 @@ h1{
     max-width: 985px;
     width: 100%;
 }
-
-#messageInp{
+#message{
    width: 92%;
    border:2px solid black;
    border-radius: 6px;
    height: 34px; 
    font-size: 22px;
 }
-
 .btn{
     cursor:pointer;
     border:2px solid black;
