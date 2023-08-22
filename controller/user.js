@@ -31,6 +31,17 @@ const signUp=async(req, res)=>{
   }
 }
 
+
+const getUser = async(req, res, next)=>{
+  try{
+  const users=await User.findAll();
+  res.status(200).json({allUsers:users})
+  }catch(error){
+    console.log(error)
+  }
+}
+
+
 const signIn = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -59,4 +70,4 @@ const signIn = async (req, res) => {
   }
 };
 
-module.exports={signUp, signIn}
+module.exports={signUp,getUser,signIn}

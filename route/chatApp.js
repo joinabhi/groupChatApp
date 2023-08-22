@@ -7,4 +7,8 @@ router.post('/add-chat', userAuthentication.authenticate, chatAppController.addC
 
 router.get('/get-chat', userAuthentication.authenticate, chatAppController.getChat);
 
+router.post('/create-group', userAuthentication.authenticate, chatAppController.createGroup);
+
+router.post('/join-group', userAuthentication.authenticate, chatAppController.joinGroup);
+
 module.exports=router;

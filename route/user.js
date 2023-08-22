@@ -7,5 +7,7 @@ router.post('/add-signUp', userController.signUp);
 
 router.post('/add-signIn', userController.signIn);
 
+router.get('/group-user', userController.getUser)
+
 
 module.exports=router;
