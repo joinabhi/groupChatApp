@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iChat - Realtime Node Socket.io Chat App</title>
-    <!-- <script defer src="http://localhost:8000/socket.io/socket.io.js"></script> -->
+    <!-- <script defer src="http://localhost:5100/group2/create-group2"></script> -->
     <script defer src="chatApp.js"></script>
     <link rel="stylesheet" href="chatApp.css">
 </head>
@@ -14,13 +14,14 @@
     </nav>
     <h1>Welcome to iChat</h1>
     <button class="btn" id="createGroup">Create Group</button>
-    <button class="btn" id="joinGroup">Join Group</button>
+    
     <h1>Created Group</h1>
     <ul id="createdGroup"></ul>
     <div class="container" id="message-container"></div>
     <div class="send">
         <form onsubmit="formSubmit(event)" id="send-container">
             <input type="hidden" name="name" id="name">
+            <!-- <form action="#" id="send-container"> -->
             <input type="text" name="message" id="message">
             <button class="btn" type="submit">Send</button>
         </form>

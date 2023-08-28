@@ -9,6 +9,16 @@ router.get('/get-chat', userAuthentication.authenticate, chatAppController.getCh
 
 router.post('/create-group', userAuthentication.authenticate, chatAppController.createGroup);
 
-router.post('/join-group', userAuthentication.authenticate, chatAppController.joinGroup);
+// router.post('/join-group', userAuthentication.authenticate, chatAppController.joinGroup);
+
+router.get('/get-group',userAuthentication.authenticate, chatAppController.getGroups)
+
+router.delete('/delete-chat/:id', userAuthentication.authenticate, chatAppController.deleteChat)
+
+router.delete('/delete-group/:id', userAuthentication.authenticate, chatAppController.deleteGroup)
+
+router.get('/get-group/:id', userAuthentication.authenticate, chatAppController.fetchGroup)
+
+// router.post('/create-group2', userAuthentication.authenticate, chatAppController.createGroupUsingSocket)
 
 module.exports=router;

@@ -1,6 +1,8 @@
 const User=require('../model/user');
+const Group=require('../model/group');
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
+const { Op } = require('sequelize');
 require('dotenv').config()
 
 const signUp=async(req, res)=>{
@@ -60,10 +62,21 @@ const signIn = async (req, res) => {
       process.env.SECRET_KEY
     );
 
+    console.log("existingUser.id:", existingUser.id);
+   const joinedGroups=[]
+    const groups = await Group.findAll()
+    for(let i=0;i<groups.length;i++){
+      if(groups[i].selectedMembers.includes(existingUser.id.toString()) || groups[i].userId == existingUser.id)
+      {
+        joinedGroups.push(groups[i].id)
+      }
+    }
+  
+    console.log("joinedGroups****joinedGroups:",existingUser.id, groups,joinedGroups);
     console.log("Token:", token);
     res
       .status(201)
-      .json({ user: existingUser, message: "User logged in successfully", token:token });
+      .json({ user: existingUser,joinedGroups, message: "User logged in successfully", token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });
