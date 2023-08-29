@@ -21,7 +21,7 @@ async function login(event) {
             // Construct the URL with query parameter
             const url = "../chatApp/chatApp.html" + "?groupIds=" + encodeURIComponent(serializedArray);
 
-// Navigate to the chatApp.html page with the data
+         // Navigate to the chatApp.html page with the data
             window.location.href = url;
               // window.location.href="../chatApp/chatApp.html"
             //    response.data.joinedGroups.forEach((g)=>{

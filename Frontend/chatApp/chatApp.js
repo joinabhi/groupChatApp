@@ -16,6 +16,7 @@ async function groupChat(message, id, group){
         const response = await axios.post("http://localhost:5100/chat/add-chat", obj, { headers: { "Authorization": token } })
         console.log('17*************', response)
         showChatOnGroup(response.data.chat, id, group)
+        
 
     } catch (error) {
         console.error(error)
@@ -40,8 +41,10 @@ async function formSubmit(event) {
 
         const response = await axios.post("http://localhost:5100/chat/add-chat", obj, { headers: { "Authorization": token } })
         console.log('17------------', response)
-
         showChatOnScreen(response.data.chat)
+        await fetchMessages();
+
+
     } catch (error) {
         console.log(error)
     }
@@ -332,7 +335,7 @@ async function getResponseFromLS2(id) {
         const parsedResponse = JSON.parse(savedResponse)
         // console.log('60', parsedResponse)
         const chatsArray = parsedResponse
-        console.log(chatsArray)
+        console.log('3333333333338888-----------',chatsArray)
         const groupData = await getGroup(id)
         console.log('*******Sorry sir*********', groupData, groupData.groupName)
         for (let i = 0; i < chatsArray.length - 1; i++) {
@@ -359,26 +362,28 @@ async function getResponseFromLS() {
         console.log('No saved response in localStorage')
     }
 }
-// async function fetchMessages(){
-//     try{
-//      const token=localStorage.getItem('token')
-//      const response=await axios.get('http://localhost:5100/chat/get-chat', {headers:{"Authorization":token}});
-//      console.log(response)
-//      var Data=response.data.allChats;
-//      const parentElem=document.getElementById('message-container');
-//      parentElem.innerHTML=''
-//      Data.forEach(message=>{
-//       const childElem=document.createElement('div')
-//       childElem.textContent=message.name+ ' : '+ message.message;
-//       childElem.style.color = "black"; // Change the text color to blue
-//       childElem.style.fontSize = "25px"; // Change the font size to 16 pixels
-//       childElem.style.fontStyle = "bold"; // Apply italic style
-//       parentElem.appendChild(childElem)
-//      })
-//      }catch(error){
-//         console.log(error)
-//     }
-// }
+
+// fetch message to show chats on container-0
+async function fetchMessages(){
+    try{
+     const token=localStorage.getItem('token')
+     const response=await axios.get('http://localhost:5100/chat/get-chat', {headers:{"Authorization":token}});
+     console.log(response)
+     var Data=response.data.allChats;
+     const parentElem=document.getElementById('message-container');
+     parentElem.innerHTML=''
+     Data.forEach(message=>{
+      const childElem=document.createElement('div')
+      childElem.textContent=message.name+ ' : '+ message.message;
+      childElem.style.color = "black"; // Change the text color to blue
+      childElem.style.fontSize = "25px"; // Change the font size to 16 pixels
+      childElem.style.fontStyle = "bold"; // Apply italic style
+      parentElem.appendChild(childElem)
+     })
+     }catch(error){
+        console.log(error)
+    }
+}
 // setInterval(fetchMessages, 5000)
 function createContainer(id, group){
     const cont = document.createElement('div');
