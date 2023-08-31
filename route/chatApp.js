@@ -19,6 +19,10 @@ router.delete('/delete-group/:id', userAuthentication.authenticate, chatAppContr
 
 router.get('/get-group/:id', userAuthentication.authenticate, chatAppController.fetchGroup)
 
+router.post('/create-multimediaFile', userAuthentication.authenticate, chatAppController.uploadFile)
+
+router.get('/get-multimediaFile', userAuthentication.authenticate, chatAppController.downloadFile)
+
 // router.post('/create-group2', userAuthentication.authenticate, chatAppController.createGroupUsingSocket)
 
 module.exports=router;

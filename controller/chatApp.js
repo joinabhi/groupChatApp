@@ -1,6 +1,10 @@
 const ChatApp=require('../model/chatApp')
 const Group=require('../model/group')
 const User=require('../model/user')
+const sequelize=require('../util/database')
+
+const UserService=require('../service/userservice')
+const S3Service=require('../service/s3service')
 
 exports.addChat=async (req, res)=>{
     // const name=req.boby.name;
@@ -121,4 +125,40 @@ exports.deleteGroup=async(req, res, next)=>{
 //     res.status(500).json({error:'An error occurred'})
 //   }
 // }
+
+exports.uploadFile= async(req, res)=>{
+  try{
+    const file = req.files.file;
+        
+        console.log("65++++++++++++++++++++++++++++",file);
+        // const stringifiedExpenses=JSON.stringify(expenses)
+        // console.log("67__________________",stringifiedExpenses)
+        const userId=req.user.id
+        console.log('136-------------=========', userId)
+        const filename=`File${userId}/${new Date()}.txt`;
+       
+
+        const fileUrl=await S3Service.uploadToS3(file.data, filename);
+        console.log('70--------', fileUrl)
+        res.status(200).json({fileUrl, success:true})
+    }catch(err){
+        console.log(err)
+        res.status(500).json({fileUrl:'Abhi bhi nhi aaya kya', success:false})
+    }
+
+}
+
+exports.downloadFile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const filename = `File${userId}/${req.params.filename}`; // Assuming the filename is passed as a parameter
+
+    const downloadUrl = await S3Service.generateDownloadUrl(filename);
+    res.status(200).json({ downloadUrl, success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ downloadUrl: 'Error generating download URL', success: false });
+  }
+};
+
 

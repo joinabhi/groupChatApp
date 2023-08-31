@@ -7,6 +7,8 @@ const cors=require('cors');
 const dotenv=require('dotenv')
 dotenv.config();
 
+
+const fileUpload = require('express-fileupload');
 const bodyParser=require('body-parser');
 const userRoute=require('./route/user');
 const chatRoute=require('./route/chatApp')
@@ -15,11 +17,9 @@ const joinRoute=require('./route/chatApp')
 const getGroupRoute=require('./route/chatApp')
 const delGroupRoute=require('./route/chatApp')
 const sequelize=require('./util/database.js');
+const multimediaFileRoute=require('./route/chatApp')
 
 // const groupRoute=require('./route/chatApp')
-
-
-
 
 
 const User = require('./model/user');
@@ -27,7 +27,7 @@ const ChatApp= require('./model/chatApp');
 const Group= require('./model/group');
 const UserGroup= require('./model/UserGroup');
 
-
+app.use(fileUpload());
 app.use(cors())
 app.use(bodyParser.json());
 app.use('/user', userRoute);
@@ -36,7 +36,8 @@ app.use('/create', createRoute);
 app.use('/join', joinRoute);
 app.use('/get', getGroupRoute);
 app.use('/group', delGroupRoute)
-// app.use('/group2', groupRoute)
+app.use('/multimediaFile', multimediaFileRoute)
+
 
 User.hasMany(ChatApp)
 ChatApp.belongsTo(User)

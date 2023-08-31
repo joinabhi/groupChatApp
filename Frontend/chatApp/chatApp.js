@@ -1,5 +1,61 @@
 let createGroup = document.getElementById('createGroup')
 const groupIds=[]
+
+
+
+document.addEventListener('DOMContentLoaded', async()=>{
+    try{
+        const token = localStorage.getItem('token')                                                         
+        const fileInput=document.getElementById('fileInput');
+        console.log('10---------------', fileInput)
+        const uploadButton=document.getElementById('uploadFile')
+       
+        uploadButton.addEventListener('click', async()=>{
+        const file=fileInput.files[0]
+        if(!file){
+           alert('Please select a file') 
+           return;
+        }
+        const formData=new FormData();
+        formData.append('file', file)
+
+        console.log("18888888888888888", formData)
+
+        const response=await axios.post('http://localhost:5100/multimediaFile/create-multimediaFile', formData, {
+            headers:{"Authorization":token}
+        });
+        response.status(200).json({File})
+     })
+    }catch(error){
+        console.log(error)
+    }
+})
+
+
+
+document.getElementById('downloadFile').addEventListener('click', download);
+async function download() {
+    try {
+      const token=localStorage.getItem('token')
+      const response = await axios.get('http://localhost:5100/multimediaFile/get-multimediaFile', {
+        headers: { "Authorization": token }
+      });
+        console.log('3393393339333339', response)
+      if (response.status === 200) {
+        const downloadUrl = response.data.fileUrl;
+        console.log('730_______________--------------', downloadUrl)
+        const downloadLink = document.createElement('a');
+        downloadLink.href = downloadUrl;
+        downloadLink.download = 'my.csv';
+        downloadLink.click();
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 async function groupChat(message, id, group){
     event.preventDefault();
     try {
@@ -173,7 +229,7 @@ async function getGroup(id) {
 }
 
 // Assuming you have a button with id 'createGroup'
-window.addEventListener('createGroup', openCreateGroupForm);
+
 console.log('-----------------')
 function chat(id, group){
     const chatContent =`
@@ -456,8 +512,9 @@ function parseJwt(token) {
 
 // Define a variable to store the selected group data
 
+window.addEventListener('createGroup', openCreateGroupForm);
 
-function openCreateGroupForm() {
+function openCreateGroupForm(previousGroupData = {}){
     // Create form content
     const formContent = `
     <form id="groupForm">
@@ -479,29 +536,25 @@ function openCreateGroupForm() {
     // Fetch the list of users and populate the member list dynamically
     fetchUsersAndPopulateMemberList();
 
-    // if (groupDataToRepopulate) {
-    //     // Get the input element for group name and set its value
-    //     const groupNameInput = document.getElementById('groupName');
-    //     groupNameInput.value = groupDataToRepopulate.groupName;
-
-    //     // Set the checked state of member checkboxes based on selectedMembers
-    //     for (const memberId of groupDataToRepopulate.selectedMembers) {
-    //         const memberCheckbox = document.querySelector(`.member-checkbox[value="${memberId}"]`);
-    //         if (memberCheckbox) {
-    //             memberCheckbox.checked = true;
-    //         }
-    //     }
-    // }
-
-    // Handle form submission
+  // Handle form submission
     const groupForm = document.getElementById('groupForm');
     groupForm.onsubmit = async function handleFormSubmit(event) {
         event.preventDefault();
+        const groupNameInput = document.getElementById('groupName');
+        groupNameInput.value = previousGroupData.groupName || '';
+
+        console.log('554))))))))))))))))))((((((((((((((((((((',groupNameInput.value)
+    
+        const selectedMembersCheckboxes = document.querySelectorAll('.member-checkbox');
+        for (const checkbox of selectedMembersCheckboxes) {
+            if (previousGroupData.selectedMembers && previousGroupData.selectedMembers.includes(checkbox.value)) {
+                checkbox.checked = true;
+            }
+        }
+
+       
         const groupName = document.getElementById('groupName').value;
-        console.log('88888', groupName)
         const selectedMembers = Array.from(document.querySelectorAll('.member-checkbox:checked')).map(checkbox => checkbox.value);
-        
-        console.log('9000000', selectedMembers)
         // Example array data
 
         const token = localStorage.getItem('token')
@@ -547,9 +600,12 @@ function openCreateGroupForm() {
             joinGroupButton.style.color = 'white';
             joinGroupButton.value = "Join Group"
             joinGroupButton.onclick = () => {
-                completedListElem.removeChild(completedItemElem)
-                openCreateGroupForm({})
-            }
+                completedListElem.removeChild(completedItemElem);
+                openCreateGroupForm({
+                    groupName: response.data.groupData.groupName,
+                    selectedMembers: response.data.groupData.selectedMembers
+                });
+            };
             completedItemElem.appendChild(joinGroupButton)
             completedItemElem.appendChild(chatButton)
 
@@ -717,3 +773,4 @@ async function fetchUsersAndPopulateMemberList() {
 //         console.log('Error fetching users:', error);
 //     }
 // }
+
